@@ -11,7 +11,7 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
 
-// Pages
+// Pages - MAKE SURE ALL ARE IMPORTED
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Gallery from './pages/Gallery';
@@ -20,6 +20,7 @@ import About from './pages/About';
 import Blog from './pages/Blog';
 import Events from './pages/Events';
 import Contact from './pages/Contact';
+import Cart from './pages/Cart'; // ← MAKE SURE THIS IS IMPORTED
 
 // Context Providers
 import { ThemeProvider } from './context/ThemeContext';
@@ -43,7 +44,7 @@ function App() {
   return (
     <HelmetProvider>
       <ThemeProvider>
-        <CartProvider>
+        <CartProvider>  {/* ← MAKE SURE THIS WRAPS THE APP */}
           <ReservationProvider>
             <Router>
               <ScrollToTop />
@@ -57,6 +58,7 @@ function App() {
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/events" element={<Events />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/cart" element={<Cart />} /> {/* ← MAKE SURE THIS EXISTS */}
               </Routes>
               <Footer />
               <Toaster

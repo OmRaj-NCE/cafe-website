@@ -32,6 +32,7 @@ export const CartProvider = ({ children }) => {
     setCartItems(prev => {
       const item = prev.find(i => i.id === id);
       if (item?.quantity > 1) {
+        toast.success(`Removed one ${item.name}`);
         return prev.map(i => 
           i.id === id ? { ...i, quantity: i.quantity - 1 } : i
         );
