@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===== META ===== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#2C1810" />
+  
+  <!-- ===== PRELOAD CRITICAL RESOURCES (FCP/LCP Improvement) ===== -->
+  <!-- Preload critical fonts -->
+   <!-- Preconnect to Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" as="style" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" as="style" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" as="style" />
+  
+  <!-- Preload hero video (if exists) -->
+  <link rel="preload" as="video" href="/videos/hero-bg.mp4" type="video/mp4" />
+  <link rel="preload" as="video" href="/videos/hero-bg.webm" type="video/webm" />
+  
+  <!-- Preload critical images -->
+  <link rel="preload" as="image" href="/images/logo.svg" />
+  <link rel="preload" as="image" href="/images/og-cover.jpg" />
+  
+  <!-- ===== FONTS ===== -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+  
+  <!-- ===== FAVICON ===== -->
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  
+  <!-- ===== SEO ===== -->
+  <title>Café Élégance — Premium Coffee House</title>
+  <meta name="description" content="Indulge in the finest coffee, freshly baked pastries, and an ambiance that feels like home. Award-winning cafe with a passion for perfection." />
+  <meta name="keywords" content="coffee shop, premium coffee, café, pastries, award winning, best coffee, coffee house, cafe, restaurant" />
+  <meta name="author" content="Café Élégance" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- ===== OPEN GRAPH ===== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Café Élégance — Premium Coffee House" />
+  <meta property="og:description" content="Experience the art of coffee making. From bean to cup, every step is crafted with love." />
+  <meta property="og:image" content="/images/og-cover.jpg" />
+  <meta property="og:url" content="https://cafeelgance.com" />
+  <meta property="og:locale" content="en_US" />
+  
+  <!-- ===== TWITTER ===== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Café Élégance — Premium Coffee House" />
+  <meta name="twitter:description" content="Experience the art of coffee making. From bean to cup, every step is crafted with love." />
+  <meta name="twitter:image" content="/images/og-cover.jpg" />
+  
+  <!-- ===== CANONICAL ===== -->
+  <link rel="canonical" href="https://cafeelgance.com" />
+  
+  <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Cafe",
+      "name": "Café Élégance",
+      "url": "https://cafeelgance.com",
+      "telephone": "+91-99999-99999",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "123 Coffee Lane",
+        "addressLocality": "Paris",
+        "addressCountry": "FR"
+      },
+      "openingHours": "Mo-Su 07:00-22:00",
+      "priceRange": "₹100 - ₹500",
+      "servesCuisine": "Coffee, Pastries, Indian Cuisine"
+    }
+  </script>
+  
+  <!-- ===== PREVENT CLS: Font Display Swap ===== -->
+  <style>
+    /* Prevent layout shift from fonts */
+    * {
+      font-display: swap;
+    }
+    
+    /* Reserve space for hero section */
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    
+    /* Loading state for React */
+    #root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Prevent CLS from content loading */
+    .loading-placeholder {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream, #FFF8F0);
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== REACT ROOT ===== -->
+  <div id="root">
+    <!-- Loading placeholder - prevents CLS -->
+    <div class="loading-placeholder">
+      <div style="text-align: center; font-family: 'Playfair Display', serif;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">☕</div>
+        <div style="font-size: 1.5rem; color: #2C1810;">Café Élégance</div>
+        <div style="font-size: 0.8rem; color: #C4956A; margin-top: 0.5rem;">Loading...</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ===== VITE ENTRY POINT ===== -->
+  <script type="module" src="/src/index.js"></script>
+</body>
+</html>

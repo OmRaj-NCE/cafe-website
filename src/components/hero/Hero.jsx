@@ -1,4 +1,4 @@
-// src/components/hero/Hero.jsx - FIXED Typewriter
+// src/components/hero/Hero.jsx - FIX CLS
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -33,32 +33,28 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Typewriter Effect - Simplified
+  // Typewriter Effect
   useEffect(() => {
     const currentPhrase = phrases[phraseIndex];
     let timeout;
 
     if (!isDeleting) {
-      // Typing
       if (charIndex < currentPhrase.length) {
         timeout = setTimeout(() => {
           setDisplayText(prev => prev + currentPhrase[charIndex]);
           setCharIndex(prev => prev + 1);
         }, 80);
       } else {
-        // Pause before deleting
         timeout = setTimeout(() => {
           setIsDeleting(true);
         }, 3000);
       }
     } else {
-      // Deleting
       if (displayText.length > 0) {
         timeout = setTimeout(() => {
           setDisplayText(prev => prev.slice(0, -1));
         }, 40);
       } else {
-        // Move to next phrase
         setIsDeleting(false);
         setCharIndex(0);
         setPhraseIndex((prev) => (prev + 1) % phrases.length);
@@ -71,102 +67,14 @@ const Hero = () => {
 
   // Floating elements data
   const floatingElements = [
-    { 
-      id: 1, 
-      icon: <FaCoffee />, 
-      size: '3.5rem', 
-      left: '5%', 
-      top: '15%',
-      delay: 0,
-      duration: 4,
-      floatDistance: 25,
-      rotation: true,
-      opacity: 0.25,
-    },
-    { 
-      id: 2, 
-      icon: '🫘',
-      size: '2.5rem', 
-      left: '2%', 
-      top: '40%',
-      delay: 1.5,
-      duration: 5,
-      floatDistance: 30,
-      rotation: true,
-      opacity: 0.2,
-    },
-    { 
-      id: 3, 
-      icon: <FaMugHot />, 
-      size: '3rem', 
-      left: '8%', 
-      top: '65%',
-      delay: 0.8,
-      duration: 4.5,
-      floatDistance: 20,
-      rotation: false,
-      opacity: 0.2,
-    },
-    { 
-      id: 4, 
-      icon: '🍵',
-      size: '2.8rem', 
-      left: '3%', 
-      top: '85%',
-      delay: 2,
-      duration: 5.5,
-      floatDistance: 22,
-      rotation: true,
-      opacity: 0.15,
-    },
-    { 
-      id: 5, 
-      icon: <FaGlassCheers />, 
-      size: '4rem', 
-      right: '5%', 
-      top: '10%',
-      delay: 1,
-      duration: 4.8,
-      floatDistance: 28,
-      rotation: true,
-      opacity: 0.2,
-    },
-    { 
-      id: 6, 
-      icon: '🫘',
-      size: '3rem', 
-      right: '2%', 
-      top: '35%',
-      delay: 2.5,
-      duration: 5.2,
-      floatDistance: 35,
-      rotation: true,
-      opacity: 0.18,
-    },
-    { 
-      id: 7, 
-      icon: <FaCoffee />, 
-      size: '3.5rem', 
-      right: '7%', 
-      top: '55%',
-      delay: 0.5,
-      duration: 4.2,
-      floatDistance: 24,
-      rotation: false,
-      opacity: 0.15,
-    },
-    { 
-      id: 8, 
-      icon: '☕',
-      size: '2.5rem', 
-      right: '4%', 
-      top: '78%',
-      delay: 3,
-      duration: 6,
-      floatDistance: 18,
-      rotation: true,
-      opacity: 0.12,
-    },
+    { id: 1, icon: <FaCoffee />, size: '3.5rem', left: '5%', top: '15%', delay: 0, duration: 4, floatDistance: 25, rotation: true, opacity: 0.25 },
+    { id: 2, icon: '🫘', size: '2.5rem', left: '2%', top: '40%', delay: 1.5, duration: 5, floatDistance: 30, rotation: true, opacity: 0.2 },
+    { id: 3, icon: <FaMugHot />, size: '3rem', left: '8%', top: '65%', delay: 0.8, duration: 4.5, floatDistance: 20, rotation: false, opacity: 0.2 },
+    { id: 4, icon: '🍵', size: '2.8rem', left: '3%', top: '85%', delay: 2, duration: 5.5, floatDistance: 22, rotation: true, opacity: 0.15 },
+    { id: 5, icon: <FaGlassCheers />, size: '4rem', right: '5%', top: '10%', delay: 1, duration: 4.8, floatDistance: 28, rotation: true, opacity: 0.2 },
+    { id: 6, icon: '🫘', size: '3rem', right: '2%', top: '35%', delay: 2.5, duration: 5.2, floatDistance: 35, rotation: true, opacity: 0.18 },
+    { id: 7, icon: <FaCoffee />, size: '3.5rem', right: '7%', top: '55%', delay: 0.5, duration: 4.2, floatDistance: 24, rotation: false, opacity: 0.15 },
+    { id: 8, icon: '☕', size: '2.5rem', right: '4%', top: '78%', delay: 3, duration: 6, floatDistance: 18, rotation: true, opacity: 0.12 },
   ];
 
   // Floating coffee beans
@@ -213,9 +121,11 @@ const Hero = () => {
         overflow: 'hidden',
         background: 'var(--gradient-dark)',
         padding: '6rem 2rem 4rem',
+        // FIX CLS: Reserve space for video
+        aspectRatio: 'auto',
       }}
     >
-      {/* Video Background */}
+      {/* Video Background - FIX CLS: Fixed dimensions */}
       <div
         style={{
           position: 'absolute',
@@ -224,6 +134,9 @@ const Hero = () => {
           right: 0,
           bottom: 0,
           zIndex: 0,
+          // FIX CLS: Reserve space
+          minHeight: '100vh',
+          width: '100%',
         }}
       >
         <video
@@ -237,6 +150,11 @@ const Hero = () => {
             objectFit: 'cover',
             opacity: 0.3,
             transform: `scale(${1 + scrollY * 0.0005})`,
+            // FIX CLS: Prevent layout shift
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            left: 0,
           }}
         >
           <source src="/videos/hero-bg.mp4" type="video/mp4" />
@@ -284,11 +202,6 @@ const Hero = () => {
             textShadow: '0 0 40px rgba(212,175,55,0.1)',
             filter: 'drop-shadow(0 0 20px rgba(212,175,55,0.05))',
           }}
-          whileHover={{
-            scale: 1.3,
-            opacity: 0.5,
-            transition: { duration: 0.3 },
-          }}
         >
           {el.icon}
         </motion.div>
@@ -302,11 +215,7 @@ const Hero = () => {
           animate={{
             opacity: [0, bean.opacity, bean.opacity, 0],
             y: [0, -100, -200, -300],
-            x: [
-              0, 
-              bean.id % 3 === 0 ? 20 : bean.id % 3 === 1 ? -20 : 0,
-              bean.id % 3 === 0 ? -15 : bean.id % 3 === 1 ? 15 : 0,
-            ],
+            x: [0, bean.id % 3 === 0 ? 20 : bean.id % 3 === 1 ? -20 : 0, bean.id % 3 === 0 ? -15 : bean.id % 3 === 1 ? 15 : 0],
             rotate: [0, 180, 360, 540],
           }}
           transition={{
@@ -339,11 +248,7 @@ const Hero = () => {
           animate={{
             opacity: [0, steam.opacity, 0],
             y: [-20, -80, -150],
-            x: [
-              0, 
-              steam.id % 2 === 0 ? 15 : -15,
-              steam.id % 2 === 0 ? -10 : 10,
-            ],
+            x: [0, steam.id % 2 === 0 ? 15 : -15, steam.id % 2 === 0 ? -10 : 10],
             scale: [0.8, 1.2, 1.5],
           }}
           transition={{
@@ -408,6 +313,9 @@ const Hero = () => {
           zIndex: 2,
           textAlign: 'center',
           maxWidth: '900px',
+          // FIX CLS: Reserve space
+          width: '100%',
+          padding: '0 1rem',
         }}
       >
         <motion.div
@@ -446,7 +354,7 @@ const Hero = () => {
           Tells a <span className="anim-shimmer">Story</span>
         </motion.h1>
 
-        {/* ===== TYPEWRITER TEXT ===== */}
+        {/* Typewriter Text - FIX CLS: Fixed height */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -455,7 +363,9 @@ const Hero = () => {
             fontSize: '1.3rem',
             color: 'rgba(255,255,255,0.8)',
             marginBottom: '2rem',
+            // FIX CLS: Reserve space
             minHeight: '3rem',
+            height: '3rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -482,11 +392,18 @@ const Hero = () => {
           </span>
         </motion.div>
 
+        {/* Buttons - FIX CLS: Fixed height container */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
+          style={{ 
+            display: 'flex', 
+            gap: '1rem', 
+            justifyContent: 'center', 
+            flexWrap: 'wrap',
+            minHeight: '60px', // FIX CLS: Reserve space
+          }}
         >
           <Link
             to="/menu"
@@ -506,14 +423,6 @@ const Hero = () => {
               alignItems: 'center',
               gap: '0.5rem',
               boxShadow: 'var(--shadow-warm)',
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = 'scale(1.05)';
-              e.target.style.boxShadow = 'var(--shadow-glow)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'scale(1)';
-              e.target.style.boxShadow = 'var(--shadow-warm)';
             }}
           >
             Explore Our Menu <MdArrowForward style={{ marginLeft: '0.5rem' }} />
@@ -535,20 +444,12 @@ const Hero = () => {
               alignItems: 'center',
               gap: '0.5rem',
             }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.05)';
-              e.target.style.transform = 'scale(1.05)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'transparent';
-              e.target.style.transform = 'scale(1)';
-            }}
           >
             Reserve a Table
           </Link>
         </motion.div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - FIX CLS: Fixed position */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
