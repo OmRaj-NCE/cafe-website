@@ -4,7 +4,10 @@
 @import './typography.css';
 @import './animations.css';
 
-/* ========== RESET ========== */
+/* ============================================
+   RESET & BASE
+   ============================================ */
+
 *,
 *::before,
 *::after {
@@ -17,6 +20,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent CLS from fonts */
+  font-display: swap;
 }
 
 body {
@@ -25,9 +30,14 @@ body {
   background: var(--cream);
   line-height: 1.6;
   overflow-x: hidden;
+  /* Prevent layout shifts */
+  min-height: 100vh;
 }
 
-/* ========== SCROLLBAR ========== */
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -45,13 +55,19 @@ body {
   background: var(--secondary);
 }
 
-/* ========== SELECTION ========== */
+/* ============================================
+   SELECTION
+   ============================================ */
+
 ::selection {
   background: var(--gold);
   color: var(--white);
 }
 
-/* ========== TYPOGRAPHY ========== */
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
 h1,
 h2,
 h3,
@@ -61,6 +77,7 @@ h6 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
+  font-display: swap;
 }
 
 h1 {
@@ -86,20 +103,51 @@ a {
   transition: var(--anim-fast);
 }
 
+/* ============================================
+   IMAGES & MEDIA - CLS FIX
+   ============================================ */
+
 img {
   max-width: 100%;
   height: auto;
   display: block;
+  /* Prevent CLS */
+  aspect-ratio: auto;
+  background-color: var(--cream);
 }
 
-/* ========== CONTAINER ========== */
+video {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* Prevent CLS */
+  aspect-ratio: 16/9;
+  background-color: #000;
+}
+
+iframe {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16/9;
+  border: 0;
+}
+
+/* ============================================
+   CONTAINER
+   ============================================ */
+
 .container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 var(--space-6);
+  width: 100%;
 }
 
-/* ========== SECTION TITLES ========== */
+/* ============================================
+   SECTION TITLES
+   ============================================ */
+
 .section-title {
   font-family: var(--font-display);
   font-size: var(--text-5xl);
@@ -142,10 +190,14 @@ img {
   font-family: var(--font-cursive);
 }
 
-/* ========== BUTTONS ========== */
+/* ============================================
+   BUTTONS - CLS FIX
+   ============================================ */
+
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
   padding: var(--space-4) var(--space-8);
   border: none;
@@ -157,6 +209,9 @@ img {
   transition: var(--anim-medium);
   position: relative;
   overflow: hidden;
+  /* Prevent CLS */
+  min-height: 48px;
+  min-width: 120px;
 }
 
 .btn::before {
@@ -206,13 +261,19 @@ img {
   transform: translateY(-4px);
 }
 
-/* ========== CARDS ========== */
+/* ============================================
+   CARDS - CLS FIX
+   ============================================ */
+
 .card {
   background: var(--white);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
   box-shadow: var(--shadow-md);
   transition: var(--anim-medium);
+  /* Prevent CLS */
+  min-height: 200px;
+  contain: layout style paint;
 }
 
 .card:hover {
@@ -220,7 +281,10 @@ img {
   box-shadow: var(--shadow-xl);
 }
 
-/* ========== RESPONSIVE ========== */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
 @media (max-width: 1024px) {
   h1 {
     font-size: var(--text-5xl);
@@ -261,6 +325,8 @@ img {
   .btn {
     padding: var(--space-3) var(--space-6);
     font-size: var(--text-sm);
+    min-height: 44px;
+    min-width: 100px;
   }
 }
 
@@ -328,6 +394,10 @@ img {
 /* Header Shrink on Scroll */
 .header {
   transition: all 0.3s ease;
+  /* Prevent CLS */
+  height: 70px;
+  min-height: 70px;
+  contain: layout style paint;
 }
 
 /* Dark Mode Support for Nav */
@@ -343,7 +413,17 @@ img {
   background: rgba(0, 0, 0, 0.8) !important;
 }
 
-/* Accessibility: Focus States */
+/* ============================================
+   ACCESSIBILITY - FOCUS STATES
+   ============================================ */
+
+/* Keyboard navigation focus */
+*:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .nav-link:focus-visible,
 .mobile-menu a:focus-visible,
 .mobile-toggle:focus-visible {
@@ -351,11 +431,119 @@ img {
   outline-offset: 2px;
 }
 
-/* Tablet & Mobile Adjustments */
+/* Skip to content link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 2rem;
+  background: var(--gold);
+  color: var(--dark);
+  z-index: 10000;
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.3s ease;
+  text-decoration: none;
+  font-family: var(--font-body);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ============================================
+   PERFORMANCE - GPU ACCELERATION
+   ============================================ */
+
+/* Will-change for smooth animations */
+.anim-float,
+.anim-shimmer,
+.anim-pulse {
+  will-change: transform, opacity;
+}
+
+/* GPU acceleration for heavy components */
+.hero-section,
+.gallery-grid,
+.menu-grid {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ============================================
+   CLS FIXES - Prevent Layout Shifts
+   ============================================ */
+
+/* Reserve space for dynamic content */
+.hero-section,
+.service-card,
+.menu-item,
+.cart-item,
+.testimonial-card,
+.blog-card,
+.event-card {
+  contain: layout style paint;
+}
+
+/* Reserve space for footer */
+.footer {
+  min-height: 300px;
+  contain: layout style paint;
+}
+
+/* Reserve space for menu toggle */
+.menu-toggle {
+  min-height: 60px;
+  contain: layout style paint;
+}
+
+/* ============================================
+   HIGH CONTRAST MODE
+   ============================================ */
+
+@media (prefers-contrast: high) {
+  :root {
+    --gold: #B8942A;
+    --primary: #1A0F0A;
+    --cream: #F5ECE0;
+  }
+  
+  .btn-primary {
+    background: #B8942A;
+    color: #1A0F0A;
+  }
+  
+  .btn-outline {
+    border-color: #B8942A;
+    color: #B8942A;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================
+   TABLET & MOBILE NAV ADJUSTMENTS
+   ============================================ */
+
 @media (max-width: 1024px) {
   .header {
     padding: 0.6rem 1.2rem !important;
     height: 64px !important;
+    min-height: 64px !important;
   }
   
   .desktop-nav {
@@ -367,6 +555,7 @@ img {
   .header {
     padding: 0.5rem 0.8rem !important;
     height: 58px !important;
+    min-height: 58px !important;
   }
   
   .mobile-menu {
@@ -582,15 +771,15 @@ body.no-scroll {
 }
 
 [data-theme="dark"] footer .container > div:first-child {
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 [data-theme="dark"] footer .newsletter-section {
-  background: rgba(255,255,255,0.02) !important;
-  border-color: rgba(255,255,255,0.05) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
 }
 
 [data-theme="dark"] footer .hours-box {
-  background: rgba(255,255,255,0.02) !important;
-  border-color: rgba(255,255,255,0.05) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
 }

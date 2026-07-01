@@ -6,28 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="theme-color" content="#2C1810" />
   
-  <!-- ===== PRELOAD CRITICAL RESOURCES (FCP/LCP Improvement) ===== -->
-  <!-- Preload critical fonts -->
-   <!-- Preconnect to Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" as="style" />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" as="style" />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" as="style" />
+  <!-- ===== RESOURCE HINTS (Improves FCP & LCP) ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
   
-  <!-- Preload hero video (if exists) -->
+  <!-- ===== PRELOAD CRITICAL RESOURCES ===== -->
+  <!-- Preload critical fonts -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Great+Vibes&display=swap" />
+  
+  <!-- Preload hero video (critical for LCP) -->
   <link rel="preload" as="video" href="/videos/hero-bg.mp4" type="video/mp4" />
   <link rel="preload" as="video" href="/videos/hero-bg.webm" type="video/webm" />
   
-  <!-- Preload critical images -->
-  <link rel="preload" as="image" href="/images/logo.svg" />
-  <link rel="preload" as="image" href="/images/og-cover.jpg" />
+  <!-- Preload critical hero image (if using image instead of video) -->
+  <link rel="preload" as="image" href="/images/hero-bg.jpg" />
   
-  <!-- ===== FONTS ===== -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" />
+  <!-- ===== FONTS (With display=swap to prevent CLS) ===== -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" />
@@ -41,7 +38,7 @@
   <!-- ===== SEO ===== -->
   <title>Café Élégance — Premium Coffee House</title>
   <meta name="description" content="Indulge in the finest coffee, freshly baked pastries, and an ambiance that feels like home. Award-winning cafe with a passion for perfection." />
-  <meta name="keywords" content="coffee shop, premium coffee, café, pastries, award winning, best coffee, coffee house, cafe, restaurant" />
+  <meta name="keywords" content="coffee shop, premium coffee, café, pastries, award winning, best coffee, coffee house" />
   <meta name="author" content="Café Élégance" />
   <meta name="robots" content="index, follow" />
   
@@ -56,13 +53,13 @@
   <!-- ===== TWITTER ===== -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Café Élégance — Premium Coffee House" />
-  <meta name="twitter:description" content="Experience the art of coffee making. From bean to cup, every step is crafted with love." />
+  <meta name="twitter:description" content="Experience the art of coffee making." />
   <meta name="twitter:image" content="/images/og-cover.jpg" />
   
   <!-- ===== CANONICAL ===== -->
   <link rel="canonical" href="https://cafeelgance.com" />
   
-  <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
+  <!-- ===== STRUCTURED DATA ===== -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -82,51 +79,169 @@
     }
   </script>
   
-  <!-- ===== PREVENT CLS: Font Display Swap ===== -->
+  <!-- ===== CRITICAL CSS (Inline above-the-fold) ===== -->
   <style>
-    /* Prevent layout shift from fonts */
+    /* Critical CSS - Prevents CLS */
     * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-display: swap;
     }
     
-    /* Reserve space for hero section */
+    :root {
+      --cream: #FFF8F0;
+      --primary: #2C1810;
+      --gold: #D4AF37;
+      --dark: #1A0F0A;
+      --coffee-light: #8B6B4B;
+    }
+    
     body {
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      background: var(--cream);
+      font-family: 'Inter', -apple-system, sans-serif;
+      overflow-x: hidden;
     }
     
-    /* Loading state for React */
     #root {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
     
-    /* Prevent CLS from content loading */
+    /* Loading placeholder - Prevents CLS */
     .loading-placeholder {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--cream, #FFF8F0);
+      background: var(--cream);
+      flex-direction: column;
+      gap: 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    
+    .loading-placeholder.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loading-placeholder .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--primary);
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+    
+    .loading-placeholder .subtitle {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.2rem;
+      color: var(--gold);
+    }
+    
+    .loading-placeholder .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(212, 175, 55, 0.1);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    
+    /* Reserve space for hero to prevent CLS */
+    .hero-section {
+      min-height: 100vh;
+      position: relative;
+      contain: layout style paint;
+    }
+    
+    /* Reserve space for images */
+    img, video, iframe {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: attr(width) / attr(height);
+    }
+    
+    /* Prevent layout shifts */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    
+    .btn {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Hide loading placeholder when content loads */
+    .app-loaded .loading-placeholder {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <!-- ===== REACT ROOT ===== -->
-  <div id="root">
-    <!-- Loading placeholder - prevents CLS -->
-    <div class="loading-placeholder">
-      <div style="text-align: center; font-family: 'Playfair Display', serif;">
-        <div style="font-size: 3rem; margin-bottom: 1rem;">☕</div>
-        <div style="font-size: 1.5rem; color: #2C1810;">Café Élégance</div>
-        <div style="font-size: 0.8rem; color: #C4956A; margin-top: 0.5rem;">Loading...</div>
-      </div>
-    </div>
+  <!-- ===== LOADING PLACEHOLDER (Prevents CLS) ===== -->
+  <div class="loading-placeholder" id="loading-placeholder">
+    <div class="logo">☕ Café Élégance</div>
+    <div class="subtitle">Premium Coffee House</div>
+    <div class="spinner"></div>
   </div>
   
-  <!-- ===== VITE ENTRY POINT ===== -->
+  <!-- ===== REACT ROOT ===== -->
+  <div id="root"></div>
+  
+  <!-- ===== VITE ENTRY ===== -->
   <script type="module" src="/src/index.js"></script>
+  
+  <!-- ===== HIDE LOADING PLACEHOLDER WHEN APP LOADS ===== -->
+  <script>
+    // Hide loading placeholder when React mounts
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const placeholder = document.getElementById('loading-placeholder');
+        if (placeholder) {
+          placeholder.classList.add('hidden');
+          // Remove from DOM after animation
+          setTimeout(function() {
+            placeholder.style.display = 'none';
+          }, 500);
+        }
+      }, 500);
+    });
+    
+    // Also hide if React takes too long (fallback)
+    setTimeout(function() {
+      const placeholder = document.getElementById('loading-placeholder');
+      if (placeholder && !placeholder.classList.contains('hidden')) {
+        placeholder.classList.add('hidden');
+        setTimeout(function() {
+          placeholder.style.display = 'none';
+        }, 500);
+      }
+    }, 3000);
+  </script>
 </body>
 </html>
