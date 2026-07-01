@@ -1,14 +1,12 @@
-// src/components/menu/MenuItem.jsx - Enhanced with ₹ & Indian Design
+// src/components/menu/MenuItem.jsx - CLEAN WORKING VERSION
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  FaStar,
-  FaHeart,
-  FaHeartBroken,
-  FaPepperHot,
-  FaUtensils,
-  FaLeaf,
-  FaFire
+import { 
+  FaStar, 
+  FaHeart, 
+  FaHeartBroken, 
+  FaFire, 
+  FaLeaf
 } from 'react-icons/fa';
 import { MdAddShoppingCart } from 'react-icons/md';
 import { useCart } from '../../context/CartContext';
@@ -155,7 +153,7 @@ const MenuItem = ({ item, index }) => {
             alignItems: 'center',
             gap: '4px',
           }}>
-            <FaSpice size={10} /> {item.origin}
+            <span style={{ fontSize: '0.7rem' }}>📍</span> {item.origin}
           </div>
         )}
 
