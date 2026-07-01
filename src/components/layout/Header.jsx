@@ -1,4 +1,4 @@
-// src/components/layout/Header.jsx
+// src/components/layout/Header.jsx - FULLY ACCESSIBLE
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -83,7 +83,6 @@ const Header = () => {
     visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeOut' } },
   };
 
-  // Mobile menu backdrop variants
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.3 } },
@@ -103,6 +102,7 @@ const Header = () => {
         initial="hidden"
         animate="visible"
         variants={headerVariants}
+        role="banner"
         style={{
           position: 'fixed',
           top: 0,
@@ -122,12 +122,23 @@ const Header = () => {
           boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.1)' : 'none',
         }}
       >
-        {/* Logo */}
-        <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+        {/* Logo - Accessible */}
+        <Link 
+          to="/" 
+          className="logo" 
+          aria-label="Café Élégance - Home"
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '12px', 
+            textDecoration: 'none' 
+          }}
+        >
           <motion.div
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
             style={{ display: 'flex', alignItems: 'center' }}
+            aria-hidden="true"
           >
             <GiCoffeeCup size={32} color="var(--gold)" />
           </motion.div>
@@ -154,16 +165,22 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="desktop-nav" style={{
-          display: isMobile ? 'none' : 'flex',
-          alignItems: 'center',
-          gap: '1.5rem',
-        }}>
+        <nav 
+          className="desktop-nav" 
+          role="navigation" 
+          aria-label="Main navigation"
+          style={{
+            display: isMobile ? 'none' : 'flex',
+            alignItems: 'center',
+            gap: '1.5rem',
+          }}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               className="nav-link"
+              aria-current={location.pathname === link.path ? 'page' : undefined}
               style={{
                 color: location.pathname === link.path ? 'var(--gold)' : 'var(--cream)',
                 fontFamily: 'var(--font-body)',
@@ -190,14 +207,25 @@ const Header = () => {
                     background: 'var(--gold)',
                     borderRadius: '2px',
                   }}
+                  aria-hidden="true"
                 />
               )}
             </Link>
           ))}
 
-          {/* Cart */}
-          <Link to="/cart" style={{ position: 'relative', color: 'var(--cream)', textDecoration: 'none' }}>
-            <MdShoppingCart size={22} />
+          {/* Cart - ACCESSIBLE FIX */}
+          <Link 
+            to="/cart" 
+            aria-label={`Shopping cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}
+            style={{
+              position: 'relative', 
+              color: 'var(--cream)', 
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <MdShoppingCart size={22} aria-hidden="true" />
             {cartCount > 0 && (
               <motion.span
                 initial={{ scale: 0 }}
@@ -217,18 +245,19 @@ const Header = () => {
                   justifyContent: 'center',
                   fontWeight: 700,
                 }}
+                aria-label={`${cartCount} items in cart`}
               >
                 {cartCount}
               </motion.span>
             )}
           </Link>
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle - Accessible */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={toggleTheme}
-            aria-label="Toggle theme"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             style={{
               background: 'transparent',
               border: 'none',
@@ -240,13 +269,14 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            {theme === 'dark' ? <MdLightMode /> : <MdDarkMode />}
+            {theme === 'dark' ? <MdLightMode aria-hidden="true" /> : <MdDarkMode aria-hidden="true" />}
           </motion.button>
 
-          {/* Reserve Button */}
+          {/* Reserve Button - Accessible */}
           <Link
             to="/reservation"
             className="btn-primary"
+            aria-label="Reserve a table"
             style={{
               padding: '0.5rem 1.5rem',
               borderRadius: '50px',
@@ -279,9 +309,19 @@ const Header = () => {
           alignItems: 'center',
           gap: '1rem',
         }}>
-          {/* Cart (Mobile) */}
-          <Link to="/cart" style={{ position: 'relative', color: 'var(--cream)', textDecoration: 'none' }}>
-            <MdShoppingCart size={22} />
+          {/* Cart (Mobile) - ACCESSIBLE */}
+          <Link 
+            to="/cart" 
+            aria-label={`Shopping cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}
+            style={{ 
+              position: 'relative', 
+              color: 'var(--cream)', 
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <MdShoppingCart size={22} aria-hidden="true" />
             {cartCount > 0 && (
               <span style={{
                 position: 'absolute',
@@ -297,18 +337,20 @@ const Header = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontWeight: 700,
-              }}>
+              }}
+              aria-label={`${cartCount} items in cart`}
+              >
                 {cartCount}
               </span>
             )}
           </Link>
 
-          {/* Theme Toggle (Mobile) */}
+          {/* Theme Toggle (Mobile) - Accessible */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={toggleTheme}
-            aria-label="Toggle theme"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             style={{
               background: 'transparent',
               border: 'none',
@@ -320,10 +362,10 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            {theme === 'dark' ? <MdLightMode /> : <MdDarkMode />}
+            {theme === 'dark' ? <MdLightMode aria-hidden="true" /> : <MdDarkMode aria-hidden="true" />}
           </motion.button>
 
-          {/* Hamburger */}
+          {/* Hamburger - Accessible */}
           <motion.button
             className="mobile-toggle"
             whileHover={{ scale: 1.1 }}
@@ -342,30 +384,9 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            {isOpen ? <MdClose /> : <GiHamburgerMenu />}
+            {isOpen ? <MdClose aria-hidden="true" /> : <GiHamburgerMenu aria-hidden="true" />}
           </motion.button>
         </div>
-
-        {/* Desktop Hamburger (hidden on desktop) */}
-        <motion.button
-          className="mobile-toggle"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isOpen}
-          style={{
-            display: isMobile ? 'none' : 'none',
-            background: 'transparent',
-            border: 'none',
-            color: 'var(--cream)',
-            fontSize: '1.6rem',
-            cursor: 'pointer',
-            padding: '4px',
-          }}
-        >
-          {isOpen ? <MdClose /> : <GiHamburgerMenu />}
-        </motion.button>
       </motion.header>
 
       {/* Mobile Menu Overlay */}
@@ -391,6 +412,7 @@ const Header = () => {
                 backdropFilter: 'blur(4px)',
                 WebkitBackdropFilter: 'blur(4px)',
               }}
+              aria-hidden="true"
             />
 
             {/* Mobile Menu */}
@@ -401,6 +423,9 @@ const Header = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mobile navigation menu"
               style={{
                 position: 'fixed',
                 top: 0,
@@ -427,7 +452,7 @@ const Header = () => {
                 borderBottom: '1px solid rgba(255,255,255,0.05)',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <GiCoffeeCup size={28} color="var(--gold)" />
+                  <GiCoffeeCup size={28} color="var(--gold)" aria-hidden="true" />
                   <h2 style={{
                     fontFamily: 'var(--font-display)',
                     color: 'var(--cream)',
@@ -460,17 +485,18 @@ const Header = () => {
                   onMouseEnter={(e) => e.target.style.background = 'rgba(255,255,255,0.1)'}
                   onMouseLeave={(e) => e.target.style.background = 'rgba(255,255,255,0.05)'}
                 >
-                  <MdClose />
+                  <MdClose aria-hidden="true" />
                 </motion.button>
               </div>
 
               {/* Navigation Links */}
-              <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+              <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }} aria-label="Mobile navigation">
                 {navLinks.map((link) => (
                   <Link
                     key={link.path}
                     to={link.path}
                     onClick={() => setIsOpen(false)}
+                    aria-current={location.pathname === link.path ? 'page' : undefined}
                     style={{
                       color: location.pathname === link.path ? 'var(--gold)' : 'var(--cream)',
                       fontFamily: 'var(--font-body)',
@@ -486,31 +512,20 @@ const Header = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}
-                    onMouseEnter={(e) => {
-                      if (location.pathname !== link.path) {
-                        e.target.style.background = 'rgba(255,255,255,0.05)';
-                        e.target.style.transform = 'translateX(6px)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (location.pathname !== link.path) {
-                        e.target.style.background = 'transparent';
-                        e.target.style.transform = 'translateX(0)';
-                      }
-                    }}
                   >
                     <span>{link.label}</span>
                     {location.pathname === link.path && (
-                      <span style={{ color: 'var(--gold)', fontSize: '0.7rem' }}>✦</span>
+                      <span style={{ color: 'var(--gold)', fontSize: '0.7rem' }} aria-hidden="true">✦</span>
                     )}
                   </Link>
                 ))}
 
-                {/* Reserve Button in Menu */}
+                {/* Reserve Button in Menu - Accessible */}
                 <Link
                   to="/reservation"
                   onClick={() => setIsOpen(false)}
                   className="btn-primary"
+                  aria-label="Reserve a table"
                   style={{
                     marginTop: '1rem',
                     padding: '1rem',
@@ -539,93 +554,57 @@ const Header = () => {
                     href="https://instagram.com"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Instagram"
                     style={{
                       color: 'var(--cream)',
                       fontSize: '1.2rem',
                       transition: 'color 0.3s ease, transform 0.3s ease',
                       opacity: 0.6,
                     }}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = 'var(--gold)';
-                      e.target.style.transform = 'scale(1.2)';
-                      e.target.style.opacity = '1';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color = 'var(--cream)';
-                      e.target.style.transform = 'scale(1)';
-                      e.target.style.opacity = '0.6';
-                    }}
                   >
-                    <FaInstagram />
+                    <FaInstagram aria-hidden="true" />
                   </a>
                   <a
                     href="https://facebook.com"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Facebook"
                     style={{
                       color: 'var(--cream)',
                       fontSize: '1.2rem',
                       transition: 'color 0.3s ease, transform 0.3s ease',
                       opacity: 0.6,
                     }}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = 'var(--gold)';
-                      e.target.style.transform = 'scale(1.2)';
-                      e.target.style.opacity = '1';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color = 'var(--cream)';
-                      e.target.style.transform = 'scale(1)';
-                      e.target.style.opacity = '0.6';
-                    }}
                   >
-                    <FaFacebook />
+                    <FaFacebook aria-hidden="true" />
                   </a>
                   <a
                     href="https://twitter.com"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Twitter"
                     style={{
                       color: 'var(--cream)',
                       fontSize: '1.2rem',
                       transition: 'color 0.3s ease, transform 0.3s ease',
                       opacity: 0.6,
                     }}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = 'var(--gold)';
-                      e.target.style.transform = 'scale(1.2)';
-                      e.target.style.opacity = '1';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color = 'var(--cream)';
-                      e.target.style.transform = 'scale(1)';
-                      e.target.style.opacity = '0.6';
-                    }}
                   >
-                    <FaTwitter />
+                    <FaTwitter aria-hidden="true" />
                   </a>
                   <a
                     href="https://youtube.com"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="YouTube"
                     style={{
                       color: 'var(--cream)',
                       fontSize: '1.2rem',
                       transition: 'color 0.3s ease, transform 0.3s ease',
                       opacity: 0.6,
                     }}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = 'var(--gold)';
-                      e.target.style.transform = 'scale(1.2)';
-                      e.target.style.opacity = '1';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color = 'var(--cream)';
-                      e.target.style.transform = 'scale(1)';
-                      e.target.style.opacity = '0.6';
-                    }}
                   >
-                    <FaYoutube />
+                    <FaYoutube aria-hidden="true" />
                   </a>
                 </div>
                 <p style={{
