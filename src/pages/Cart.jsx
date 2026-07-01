@@ -1,4 +1,4 @@
-// src/pages/Cart.jsx - COMPLETE WORKING VERSION
+// src/pages/Cart.jsx - FULLY RESPONSIVE
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
@@ -24,14 +24,24 @@ const Cart = () => {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [total, setTotal] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   // Calculate totals
   useEffect(() => {
     const subtotal = getTotalPrice();
-    const fee = subtotal > 500 ? 0 : 50; // Free delivery above ₹500
+    const fee = subtotal > 500 ? 0 : 50;
     setDeliveryFee(fee);
     setTotal(subtotal + fee);
   }, [cartItems, getTotalPrice]);
+
+  // Handle resize for responsive
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Indian currency formatter
   const formatPrice = (price) => {
@@ -66,6 +76,7 @@ const Cart = () => {
     }
   };
 
+  // Empty Cart State
   if (cartItems.length === 0) {
     return (
       <>
@@ -75,7 +86,7 @@ const Cart = () => {
         </Helmet>
 
         <section style={{
-          padding: '10rem 2rem 6rem',
+          padding: '10rem 1.5rem 6rem',
           background: 'var(--cream)',
           textAlign: 'center',
           minHeight: '70vh',
@@ -90,6 +101,8 @@ const Cart = () => {
             style={{
               maxWidth: '500px',
               margin: '0 auto',
+              width: '100%',
+              padding: '0 1rem',
             }}
           >
             <motion.div
@@ -104,7 +117,7 @@ const Cart = () => {
             </motion.div>
             <h2 style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '2.5rem',
+              fontSize: 'clamp(2rem, 5vw, 2.5rem)',
               color: 'var(--primary)',
               marginBottom: '0.5rem',
             }}>
@@ -112,24 +125,31 @@ const Cart = () => {
             </h2>
             <p style={{
               color: 'var(--coffee-light)',
-              fontSize: '1.05rem',
+              fontSize: 'clamp(0.95rem, 2vw, 1.05rem)',
               marginBottom: '2rem',
               lineHeight: 1.8,
             }}>
               Looks like you haven't added any items yet. 
               Explore our menu and discover something delicious!
             </p>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div style={{ 
+              display: 'flex', 
+              gap: '1rem', 
+              justifyContent: 'center', 
+              flexWrap: 'wrap',
+              flexDirection: isMobile ? 'column' : 'row',
+              alignItems: 'center',
+            }}>
               <Link
                 to="/menu"
                 className="btn btn-primary"
                 style={{
-                  padding: '1rem 2.5rem',
+                  padding: '1rem 2rem',
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.5rem',
-                  fontSize: '1rem',
+                  fontSize: 'clamp(0.9rem, 2vw, 1rem)',
                   borderRadius: '50px',
                   background: 'var(--gradient-gold)',
                   color: 'var(--dark)',
@@ -137,6 +157,8 @@ const Cart = () => {
                   border: 'none',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
+                  width: isMobile ? '100%' : 'auto',
+                  justifyContent: 'center',
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'scale(1.05)';
@@ -157,7 +179,7 @@ const Cart = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.5rem',
-                  fontSize: '0.95rem',
+                  fontSize: 'clamp(0.9rem, 2vw, 0.95rem)',
                   borderRadius: '50px',
                   border: '2px solid var(--coffee-light)',
                   color: 'var(--coffee-light)',
@@ -165,6 +187,8 @@ const Cart = () => {
                   fontWeight: 500,
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
+                  width: isMobile ? '100%' : 'auto',
+                  justifyContent: 'center',
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.borderColor = 'var(--gold)';
@@ -178,18 +202,24 @@ const Cart = () => {
                 <FaArrowLeft /> Continue Shopping
               </Link>
             </div>
+
             {/* Featured Items */}
             <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
               <p style={{ color: 'var(--coffee-light)', fontSize: '0.85rem', marginBottom: '1rem' }}>
                 ✦ Popular picks you might like
               </p>
-              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div style={{ 
+                display: 'flex', 
+                gap: '0.75rem', 
+                justifyContent: 'center', 
+                flexWrap: 'wrap',
+              }}>
                 {['☕ Filter Coffee', '🍵 Masala Chai', '🥐 Butter Croissant', '🍛 Biryani'].map((item, i) => (
                   <span key={i} style={{
                     background: 'var(--white)',
                     padding: '0.5rem 1rem',
                     borderRadius: '50px',
-                    fontSize: '0.85rem',
+                    fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)',
                     color: 'var(--coffee)',
                     boxShadow: 'var(--shadow-sm)',
                     border: '1px solid rgba(0,0,0,0.03)',
@@ -214,7 +244,7 @@ const Cart = () => {
 
       {/* Page Hero */}
       <section style={{
-        padding: '8rem 2rem 3rem',
+        padding: '8rem 1.5rem 3rem',
         background: 'var(--gradient-warm)',
         textAlign: 'center',
         position: 'relative',
@@ -243,7 +273,7 @@ const Cart = () => {
             marginBottom: '1rem',
             border: '1px solid rgba(212,175,55,0.2)',
           }}>
-            <span style={{ color: 'var(--gold)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            <span style={{ color: 'var(--gold)', fontSize: 'clamp(0.65rem, 1.5vw, 0.75rem)', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               <FaShoppingBag style={{ marginRight: '0.5rem' }} />
               {cartItems.length} {cartItems.length === 1 ? 'Item' : 'Items'}
             </span>
@@ -251,7 +281,7 @@ const Cart = () => {
           <h1 style={{
             fontFamily: 'var(--font-display)',
             color: 'var(--cream)',
-            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
           }}>
             Your <span style={{ color: 'var(--gold)' }}>Cart</span>
           </h1>
@@ -259,7 +289,7 @@ const Cart = () => {
             color: 'rgba(255,255,255,0.8)',
             maxWidth: '500px',
             margin: '0.5rem auto 0',
-            fontSize: '1rem',
+            fontSize: 'clamp(0.9rem, 2vw, 1rem)',
           }}>
             Review your selections before checkout
           </p>
@@ -267,7 +297,7 @@ const Cart = () => {
       </section>
 
       {/* Cart Section */}
-      <section style={{ padding: '3rem 2rem 6rem', background: 'var(--cream)' }}>
+      <section style={{ padding: '2rem 1.5rem 6rem', background: 'var(--cream)' }}>
         <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           
           {/* Continue Shopping Link */}
@@ -279,7 +309,7 @@ const Cart = () => {
               gap: '0.5rem',
               color: 'var(--coffee-light)',
               textDecoration: 'none',
-              fontSize: '0.9rem',
+              fontSize: 'clamp(0.85rem, 1.5vw, 0.9rem)',
               marginBottom: '2rem',
               transition: 'color 0.3s ease',
             }}
@@ -291,7 +321,7 @@ const Cart = () => {
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '1.5fr 1fr',
+            gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr',
             gap: '2rem',
             alignItems: 'start',
           }}>
@@ -304,10 +334,12 @@ const Cart = () => {
                 marginBottom: '1.5rem',
                 paddingBottom: '0.75rem',
                 borderBottom: '2px solid rgba(0,0,0,0.04)',
+                flexWrap: 'wrap',
+                gap: '0.5rem',
               }}>
                 <h2 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: '1.3rem',
+                  fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)',
                   color: 'var(--primary)',
                   margin: 0,
                 }}>
@@ -325,7 +357,7 @@ const Cart = () => {
                     border: '1px solid #e53935',
                     background: 'transparent',
                     color: '#e53935',
-                    fontSize: '0.75rem',
+                    fontSize: 'clamp(0.65rem, 1.5vw, 0.75rem)',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     fontFamily: 'var(--font-body)',
@@ -355,148 +387,163 @@ const Cart = () => {
                     style={{
                       background: 'var(--white)',
                       borderRadius: 'var(--radius-lg)',
-                      padding: '1.25rem 1.5rem',
+                      padding: isMobile ? '1rem' : '1.25rem 1.5rem',
                       marginBottom: '1rem',
                       boxShadow: 'var(--shadow-sm)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem',
                       border: '1px solid rgba(0,0,0,0.02)',
                       transition: 'box-shadow 0.3s ease',
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-md)'}
                     onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-sm)'}
                   >
-                    {/* Item Icon */}
                     <div style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: 'var(--radius-md)',
-                      background: 'var(--gradient-warm)',
                       display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.6rem',
-                      flexShrink: 0,
+                      flexDirection: isMobile ? 'column' : 'row',
+                      alignItems: isMobile ? 'stretch' : 'center',
+                      gap: isMobile ? '0.75rem' : '1rem',
                     }}>
-                      {item.category === 'coffee' && '☕'}
-                      {item.category === 'tea' && '🍵'}
-                      {item.category === 'breakfast' && '🌅'}
-                      {item.category === 'lunch' && '🍛'}
-                      {item.category === 'snacks' && '🧆'}
-                      {item.category === 'sweets' && '🍬'}
-                      {item.category === 'beverages' && '🥤'}
-                      {item.category === 'breads' && '🥖'}
-                      {!['coffee','tea','breakfast','lunch','snacks','sweets','beverages','breads'].includes(item.category) && '🍽️'}
-                    </div>
+                      {/* Item Icon */}
+                      <div style={{
+                        width: isMobile ? '48px' : '56px',
+                        height: isMobile ? '48px' : '56px',
+                        borderRadius: 'var(--radius-md)',
+                        background: 'var(--gradient-warm)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: isMobile ? '1.3rem' : '1.6rem',
+                        flexShrink: 0,
+                        alignSelf: isMobile ? 'center' : 'center',
+                      }}>
+                        {item.category === 'coffee' && '☕'}
+                        {item.category === 'tea' && '🍵'}
+                        {item.category === 'breakfast' && '🌅'}
+                        {item.category === 'lunch' && '🍛'}
+                        {item.category === 'snacks' && '🧆'}
+                        {item.category === 'sweets' && '🍬'}
+                        {item.category === 'beverages' && '🥤'}
+                        {item.category === 'breads' && '🥖'}
+                        {!['coffee','tea','breakfast','lunch','snacks','sweets','beverages','breads'].includes(item.category) && '🍽️'}
+                      </div>
 
-                    {/* Item Details */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <h4 style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1rem',
-                        color: 'var(--primary)',
-                        margin: 0,
+                      {/* Item Details */}
+                      <div style={{ 
+                        flex: 1, 
+                        minWidth: 0,
+                        textAlign: isMobile ? 'center' : 'left',
                       }}>
-                        {item.name}
-                      </h4>
-                      <p style={{
-                        color: 'var(--coffee-light)',
-                        fontSize: '0.75rem',
-                        margin: '0.15rem 0 0.3rem',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}>
-                        {item.description.substring(0, 40)}...
-                      </p>
-                      <span style={{
-                        color: 'var(--gold)',
-                        fontWeight: 600,
-                        fontSize: '0.9rem',
-                      }}>
-                        {formatPrice(item.price)}
-                      </span>
-                    </div>
-
-                    {/* Quantity Controls */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={() => handleQuantityChange(item, 'decrease')}
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          borderRadius: '50%',
-                          border: '1px solid var(--gold)',
-                          background: 'transparent',
+                        <h4 style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: isMobile ? '0.95rem' : '1rem',
+                          color: 'var(--primary)',
+                          margin: 0,
+                        }}>
+                          {item.name}
+                        </h4>
+                        <p style={{
+                          color: 'var(--coffee-light)',
+                          fontSize: isMobile ? '0.7rem' : '0.75rem',
+                          margin: '0.15rem 0 0.3rem',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: isMobile ? 'normal' : 'nowrap',
+                        }}>
+                          {item.description.length > 40 ? item.description.substring(0, 40) + '...' : item.description}
+                        </p>
+                        <span style={{
                           color: 'var(--gold)',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          transition: 'all 0.3s ease',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.background = 'var(--gold)';
-                          e.target.style.color = 'var(--dark)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.background = 'transparent';
-                          e.target.style.color = 'var(--gold)';
-                        }}
-                      >
-                        {item.quantity > 1 ? <FaMinus size={10} /> : <FaTrash size={10} />}
-                      </motion.button>
+                          fontWeight: 600,
+                          fontSize: isMobile ? '0.85rem' : '0.9rem',
+                        }}>
+                          {formatPrice(item.price)}
+                        </span>
+                      </div>
 
-                      <span style={{
-                        fontWeight: 600,
-                        minWidth: '24px',
-                        textAlign: 'center',
-                        fontSize: '0.95rem',
-                        color: 'var(--primary)',
+                      {/* Quantity Controls */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: isMobile ? 'center' : 'flex-end',
+                        gap: '0.5rem',
+                        marginTop: isMobile ? '0.5rem' : '0',
                       }}>
-                        {item.quantity}
-                      </span>
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleQuantityChange(item, 'decrease')}
+                          style={{
+                            width: isMobile ? '32px' : '30px',
+                            height: isMobile ? '32px' : '30px',
+                            borderRadius: '50%',
+                            border: '1px solid var(--gold)',
+                            background: 'transparent',
+                            color: 'var(--gold)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.3s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.target.style.background = 'var(--gold)';
+                            e.target.style.color = 'var(--dark)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.background = 'transparent';
+                            e.target.style.color = 'var(--gold)';
+                          }}
+                        >
+                          {item.quantity > 1 ? <FaMinus size={isMobile ? 12 : 10} /> : <FaTrash size={isMobile ? 12 : 10} />}
+                        </motion.button>
 
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={() => handleQuantityChange(item, 'increase')}
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          borderRadius: '50%',
-                          border: 'none',
-                          background: 'var(--gradient-gold)',
-                          color: 'var(--dark)',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          transition: 'transform 0.3s ease',
-                        }}
-                      >
-                        <FaPlus size={10} />
-                      </motion.button>
-                    </div>
+                        <span style={{
+                          fontWeight: 600,
+                          minWidth: '24px',
+                          textAlign: 'center',
+                          fontSize: isMobile ? '0.9rem' : '0.95rem',
+                          color: 'var(--primary)',
+                        }}>
+                          {item.quantity}
+                        </span>
 
-                    {/* Item Total */}
-                    <div style={{
-                      textAlign: 'right',
-                      minWidth: '80px',
-                      borderLeft: '1px solid rgba(0,0,0,0.04)',
-                      paddingLeft: '1rem',
-                    }}>
-                      <span style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.05rem',
-                        fontWeight: 700,
-                        color: 'var(--primary)',
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleQuantityChange(item, 'increase')}
+                          style={{
+                            width: isMobile ? '32px' : '30px',
+                            height: isMobile ? '32px' : '30px',
+                            borderRadius: '50%',
+                            border: 'none',
+                            background: 'var(--gradient-gold)',
+                            color: 'var(--dark)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'transform 0.3s ease',
+                          }}
+                        >
+                          <FaPlus size={isMobile ? 12 : 10} />
+                        </motion.button>
+                      </div>
+
+                      {/* Item Total */}
+                      <div style={{
+                        textAlign: isMobile ? 'center' : 'right',
+                        borderTop: isMobile ? '1px solid rgba(0,0,0,0.04)' : 'none',
+                        paddingTop: isMobile ? '0.5rem' : '0',
+                        marginTop: isMobile ? '0.5rem' : '0',
                       }}>
-                        {formatPrice(item.price * item.quantity)}
-                      </span>
+                        <span style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: isMobile ? '1rem' : '1.05rem',
+                          fontWeight: 700,
+                          color: 'var(--primary)',
+                        }}>
+                          {formatPrice(item.price * item.quantity)}
+                        </span>
+                      </div>
                     </div>
                   </motion.div>
                 ))}
@@ -509,20 +556,21 @@ const Cart = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{
-                position: 'sticky',
-                top: '100px',
+                position: isMobile ? 'relative' : 'sticky',
+                top: isMobile ? '0' : '100px',
+                width: '100%',
               }}
             >
               <div style={{
                 background: 'var(--white)',
                 borderRadius: 'var(--radius-xl)',
-                padding: '1.5rem',
+                padding: isMobile ? '1.25rem' : '1.5rem',
                 boxShadow: 'var(--shadow-lg)',
                 border: '1px solid rgba(0,0,0,0.03)',
               }}>
                 <h3 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: '1.3rem',
+                  fontSize: isMobile ? '1.1rem' : '1.3rem',
                   color: 'var(--primary)',
                   marginBottom: '1.5rem',
                   paddingBottom: '0.75rem',
@@ -531,18 +579,22 @@ const Cart = () => {
                   alignItems: 'center',
                   gap: '0.5rem',
                 }}>
-                  <FaShoppingBag size={18} /> Order Summary
+                  <FaShoppingBag size={isMobile ? 16 : 18} /> Order Summary
                 </h3>
 
                 {/* Items List */}
-                <div style={{ marginBottom: '1rem', maxHeight: '200px', overflowY: 'auto' }}>
+                <div style={{ 
+                  marginBottom: '1rem', 
+                  maxHeight: isMobile ? '150px' : '200px', 
+                  overflowY: 'auto',
+                }}>
                   {cartItems.map((item) => (
                     <div key={item.id} style={{
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: '0.4rem 0',
                       borderBottom: '1px solid rgba(0,0,0,0.02)',
-                      fontSize: '0.85rem',
+                      fontSize: isMobile ? '0.8rem' : '0.85rem',
                     }}>
                       <span style={{ color: 'var(--coffee)' }}>
                         {item.name} × {item.quantity}
@@ -560,7 +612,7 @@ const Cart = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     padding: '0.5rem 0',
-                    fontSize: '0.9rem',
+                    fontSize: isMobile ? '0.85rem' : '0.9rem',
                     color: 'var(--coffee-light)',
                   }}>
                     <span>Subtotal</span>
@@ -571,11 +623,11 @@ const Cart = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     padding: '0.5rem 0',
-                    fontSize: '0.9rem',
+                    fontSize: isMobile ? '0.85rem' : '0.9rem',
                     color: 'var(--coffee-light)',
                   }}>
                     <span>
-                      <FaTruck size={12} style={{ marginRight: '0.3rem' }} />
+                      <FaTruck size={isMobile ? 10 : 12} style={{ marginRight: '0.3rem' }} />
                       Delivery
                     </span>
                     <span style={{ color: deliveryFee === 0 ? 'var(--gold)' : 'var(--coffee-light)' }}>
@@ -588,11 +640,13 @@ const Cart = () => {
                       background: 'var(--gold-pale)',
                       padding: '0.3rem 0.8rem',
                       borderRadius: '20px',
-                      fontSize: '0.7rem',
+                      fontSize: isMobile ? '0.65rem' : '0.7rem',
                       color: 'var(--gold)',
                       fontWeight: 600,
                       display: 'inline-block',
                       marginTop: '0.25rem',
+                      width: '100%',
+                      textAlign: 'center',
                     }}>
                       ✦ Free delivery on orders above ₹500
                     </div>
@@ -604,7 +658,7 @@ const Cart = () => {
                     padding: '1rem 0',
                     marginTop: '0.5rem',
                     borderTop: '2px solid var(--gold)',
-                    fontSize: '1.15rem',
+                    fontSize: isMobile ? '1rem' : '1.15rem',
                     fontWeight: 700,
                   }}>
                     <span style={{ color: 'var(--primary)' }}>Total</span>
@@ -620,14 +674,14 @@ const Cart = () => {
                   disabled={isCheckingOut || cartItems.length === 0}
                   style={{
                     width: '100%',
-                    padding: '1rem',
+                    padding: isMobile ? '0.9rem' : '1rem',
                     marginTop: '1rem',
                     borderRadius: '50px',
                     border: 'none',
                     background: isCheckingOut ? 'var(--coffee-light)' : 'var(--gradient-gold)',
                     color: isCheckingOut ? 'var(--cream)' : 'var(--dark)',
                     fontWeight: 700,
-                    fontSize: '1rem',
+                    fontSize: isMobile ? '0.9rem' : '1rem',
                     cursor: isCheckingOut || cartItems.length === 0 ? 'not-allowed' : 'pointer',
                     opacity: isCheckingOut || cartItems.length === 0 ? 0.6 : 1,
                     display: 'flex',
@@ -652,8 +706,8 @@ const Cart = () => {
                     <>
                       <span className="loader" style={{
                         display: 'inline-block',
-                        width: '20px',
-                        height: '20px',
+                        width: '18px',
+                        height: '18px',
                         border: '2px solid var(--dark)',
                         borderTopColor: 'transparent',
                         borderRadius: '50%',
@@ -672,12 +726,12 @@ const Cart = () => {
                 <div style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  gap: '1rem',
+                  gap: isMobile ? '0.5rem' : '1rem',
                   marginTop: '1rem',
                   flexWrap: 'wrap',
                 }}>
                   <span style={{
-                    fontSize: '0.65rem',
+                    fontSize: isMobile ? '0.55rem' : '0.65rem',
                     color: 'var(--coffee-light)',
                     display: 'flex',
                     alignItems: 'center',
@@ -685,12 +739,17 @@ const Cart = () => {
                   }}>
                     🔒 Secure Checkout
                   </span>
-                  
-<span style={{ fontSize: '0.65rem', color: 'var(--coffee-light)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-  🚚 Free Delivery &gt; ₹500
-</span>
                   <span style={{
-                    fontSize: '0.65rem',
+                    fontSize: isMobile ? '0.55rem' : '0.65rem',
+                    color: 'var(--coffee-light)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                  }}>
+                    🚚 Free Delivery &gt; ₹500
+                  </span>
+                  <span style={{
+                    fontSize: isMobile ? '0.55rem' : '0.65rem',
                     color: 'var(--coffee-light)',
                     display: 'flex',
                     alignItems: 'center',
@@ -704,7 +763,7 @@ const Cart = () => {
                 <p style={{
                   textAlign: 'center',
                   marginTop: '1rem',
-                  fontSize: '0.7rem',
+                  fontSize: isMobile ? '0.6rem' : '0.7rem',
                   color: 'var(--coffee-light)',
                   opacity: 0.6,
                 }}>
@@ -715,19 +774,20 @@ const Cart = () => {
               {/* Promo Code */}
               <div style={{
                 marginTop: '1rem',
-                padding: '1rem',
+                padding: isMobile ? '0.75rem' : '1rem',
                 background: 'var(--cream)',
                 borderRadius: 'var(--radius-lg)',
                 border: '1px dashed var(--gold)',
                 textAlign: 'center',
               }}>
                 <p style={{
-                  fontSize: '0.8rem',
+                  fontSize: isMobile ? '0.75rem' : '0.8rem',
                   color: 'var(--coffee-light)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '0.5rem',
+                  flexWrap: 'wrap',
                 }}>
                   <MdLocalOffer color="var(--gold)" />
                   Have a promo code? Apply at checkout
@@ -737,6 +797,18 @@ const Cart = () => {
           </div>
         </div>
       </section>
+
+      {/* Add responsive styles */}
+      <style>
+        {`
+          @media (max-width: 480px) {
+            .btn {
+              width: 100%;
+              justify-content: center;
+            }
+          }
+        `}
+      </style>
     </>
   );
 };
