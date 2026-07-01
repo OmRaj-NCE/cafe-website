@@ -1,0 +1,144 @@
+/* src/styles/typography.css */
+
+/* ========== FONT IMPORTS ========== */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&family=Dancing+Script:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ========== CURSIVE ELEMENTS ========== */
+.cursive {
+  font-family: var(--font-cursive);
+  font-weight: 700;
+}
+
+.cursive-light {
+  font-family: var(--font-cursive);
+  font-weight: 400;
+}
+
+/* ========== DISPLAY ELEMENTS ========== */
+.display {
+  font-family: var(--font-display);
+}
+
+.display-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+/* ========== BODY TEXT ========== */
+.body-text {
+  font-family: var(--font-body);
+}
+
+.body-light {
+  font-family: var(--font-body);
+  font-weight: 300;
+}
+
+.body-medium {
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.body-bold {
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+
+/* ========== HERO TEXT ========== */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: var(--text-7xl);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-family: var(--font-cursive);
+  font-size: var(--text-2xl);
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+
+.hero-description {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 300;
+  line-height: 1.8;
+  opacity: 0.9;
+}
+
+/* ========== MENU FONTS ========== */
+.menu-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+}
+
+.menu-price {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.menu-description {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--coffee-light);
+  font-weight: 300;
+}
+
+/* ========== QUOTE FONTS ========== */
+.quote-text {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-style: italic;
+  line-height: 1.8;
+}
+
+.quote-author {
+  font-family: var(--font-cursive);
+  font-size: var(--text-xl);
+  color: var(--gold);
+}
+
+/* ========== TESTIMONIALS ========== */
+.testimonial-text {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--text-lg);
+  line-height: 1.8;
+}
+
+.testimonial-author {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* ========== SPECIAL STYLES ========== */
+.gold-text {
+  color: var(--gold);
+}
+
+.warm-text {
+  color: var(--secondary);
+}
+
+.cream-text {
+  color: var(--cream);
+}
+
+.letter-spacing-wide {
+  letter-spacing: 0.15em;
+}
+
+.letter-spacing-wider {
+  letter-spacing: 0.25em;
+}
+
+.text-shadow-gold {
+  text-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+}
+
+.text-shadow-warm {
+  text-shadow: 0 4px 20px rgba(44, 24, 16, 0.15);
+}
